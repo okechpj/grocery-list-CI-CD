@@ -54,3 +54,6 @@ def close_connection(exception):
 
 if __name__ == '__main__':
     app.run()
+
+
+from grocery_list import setup_database
