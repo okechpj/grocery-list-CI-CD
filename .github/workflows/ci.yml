@@ -35,4 +35,4 @@ jobs:
 
       - name: Setup test database
         run: |
-          python setup_db.py
+          python grocery_list.py
