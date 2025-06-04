@@ -1,78 +1,31 @@
+
+
 import sqlite3
 
-groceries = [
-	"apples",
-	"bananas",
-	"clemintines",
-	"dill",
-	"eggs",
-	"flour",
-	"granola",
-	"honey",
-	"ice cream",
-	"juice",
-	"ketchup",
-	"lemon",
-	"margarine",
-	"onion",
-	"potatoes",
-	"rosmary",
-	"salt",
-	"thyme",
-	"vinegar",
-	"watermelon",
-	"pears",
-	"cucumbers",
-	"garlic",
-	"carrots",
-	"pastries",
-	"eggplants",
-	"milk",
-	"coffee",
-	"tea",
-	"rice",
-	"noodles",
-	"lentils",
-	"sweet potatoes",
-	"strawberries",
-	"cranberries",
-	"mangos",
-	"pappers",
-	"zuccinis",
-	"lime",
-	"broth",
-	"mushrooms",
-	"chicken",
-	"beef",
-	"pork",
-	"fish",
-	"cream",
-	"paprika",
-	"tumeric",
-	"cinamon",
-	"pumpkin",
-	"basil",
-	"tomatoes",
-	"bread",
-	"cake",
-	"chocolate",
-	"gum",
-	"pinapple",
-	"oranges",
-	"lettuce",
-	"cheese",
-	"cilantro"
-]
+groceries = sorted([
+    "apples", "bananas", "clemintines", "dill", "eggs", "flour", "granola", "honey",
+    "ice cream", "juice", "ketchup", "lemon", "margarine", "onion", "potatoes",
+    "rosmary", "salt", "thyme", "vinegar", "watermelon", "pears", "cucumbers",
+    "garlic", "carrots", "pastries", "eggplants", "milk", "coffee", "tea", "rice",
+    "noodles", "lentils", "sweet potatoes", "strawberries", "cranberries", "mangos",
+    "pappers", "zuccinis", "lime", "broth", "mushrooms", "chicken", "beef", "pork",
+    "fish", "cream", "paprika", "tumeric", "cinamon", "pumpkin", "basil", "tomatoes",
+    "bread", "cake", "chocolate", "gum", "pinapple", "oranges", "lettuce", "cheese", "cilantro"
+])
 
-groceries = sorted(groceries)
+def setup_database(db_path="grocery_list.db"):
+    connection = sqlite3.connect(db_path)
+    cursor = connection.cursor()
 
-connection = sqlite3.connect("grocery_list.db")
-cursor = connection.cursor()
+    cursor.execute("DROP TABLE IF EXISTS groceries")
+    cursor.execute("CREATE TABLE groceries (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)")
 
-cursor.execute("create table groceries (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)")
-for i in range(len(groceries)):
-	cursor.execute("insert into groceries (name) values (?)",[groceries[i]])
-	print("added ", groceries[i])
+    for item in groceries:
+        cursor.execute("INSERT INTO groceries (name) VALUES (?)", [item])
 
-connection.commit()
-connection.close()
+    connection.commit()
+    connection.close()
+    print(f"✅ Database '{db_path}' initialized with {len(groceries)} items.")
+
+if __name__ == "__main__":
+    setup_database()
